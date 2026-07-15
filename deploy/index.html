@@ -524,12 +524,12 @@ const FRESCO_COLORS={
 };
 /* 每个纹样的三层配色：core(中心)/body(主体)/outer(外圈) */
 const FRESCO_SCHEME={
- 1:{core:'jin',body:'shiqing',outer:'zheshi'}, // 忍冬：石青 + 金
- 2:{core:'jin',body:'zhusha', outer:'zheshi'}, // 莲花：朱砂 + 金
- 3:{core:'jin',body:'shiqing',outer:'zheshi'}, // 云纹：石青
- 4:{core:'jin',body:'shiqing',outer:'zheshi'}, // 八功德水波纹：石青
- 5:{core:'jin',body:'zheshi', outer:'shiqing'},// 千佛点阵：赭石 + 石青
- 6:{core:'jin',body:'zhusha', outer:'shiqing'} // 三兔共耳藻井：朱砂 + 石青
+ 1:{core:'jin',  body:'zheshi',  outer:'shiqing'}, // 忍冬：主体石青
+ 2:{core:'jin',  body:'zheshi',  outer:'zhusha'},  // 莲花：主体朱砂
+ 3:{core:'jin',  body:'zheshi',  outer:'shiqing'}, // 云纹：主体石青
+ 4:{core:'jin',  body:'zheshi',  outer:'shiqing'}, // 八功德水波纹：主体石青
+ 5:{core:'jin',  body:'shiqing', outer:'zheshi'},  // 千佛点阵：主体赭石
+ 6:{core:'zhusha',body:'shiqing', outer:'jin'}      // 三兔共耳藻井：外圈金
 };
 
 /* ===== VIEWER CLASS ===== */
@@ -572,10 +572,10 @@ this.ctrl.autoRotate=true;this.ctrl.autoRotateSpeed=0.6;
 this.ctrl.minDistance=1;this.ctrl.maxDistance=15;
 
 // Lights
-this.sc.add(new THREE.AmbientLight(0xffffff,0.5));
-const dl=new THREE.DirectionalLight(0xffe4b5,1);dl.position.set(3,4,5);this.sc.add(dl);
-const rl=new THREE.DirectionalLight(0x4a6d7c,0.3);rl.position.set(-3,-2,-4);this.sc.add(rl);
-this.ml3=new THREE.PointLight(0xc9a84c,0.6,15);this.ml3.position.set(0,0,3);this.sc.add(this.ml3);
+this.sc.add(new THREE.AmbientLight(0xffffff,0.7));
+const dl=new THREE.DirectionalLight(0xffffff,0.9);dl.position.set(3,4,5);this.sc.add(dl);
+const rl=new THREE.DirectionalLight(0x4a6d7c,0.35);rl.position.set(-3,-2,-4);this.sc.add(rl);
+this.ml3=new THREE.PointLight(0xffffff,0.4,15);this.ml3.position.set(0,0,3);this.sc.add(this.ml3);
 
 // Mouse light
 this.wrap.addEventListener('mousemove',e=>{
@@ -1246,8 +1246,7 @@ const sg=document.getElementById('sgrd');if(sg&&!sg.children.length){D.symbols.f
 
 /* ===== INIT ===== */
 buildAll();particles();initCompare();hInitArrows();
-// 首页主视觉：命中 images/hero.jpg(png) 则作暗化背景，未命中保持纯文字
-findImg('images/hero',url=>{if(url){const hh=document.querySelector('.hh');if(hh){hh.style.backgroundImage='linear-gradient(rgba(10,8,6,.62),rgba(10,8,6,.62)),url('+url+')';hh.style.backgroundSize='cover';hh.style.backgroundPosition='center';}}});
+// 首页主视觉：保持深色背景，不再加载 images/hero.jpg 作为背景图
 
 // 深链：?pattern=N 直接打开对应纹样详情页（供 React 轮播首页跳转）
 const _qs=new URLSearchParams(location.search);
