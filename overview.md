@@ -9,6 +9,7 @@
 - `v4-clean-bg`（commit `8e0962e`）：进一步去除网页容器与图片黑色投影导致的黑底，可 `git checkout v4-clean-bg` 回退。
 - `v5-clean-bg`（commit `ac15031`）：为轮播卡片加径向光晕/半透明底色，彻底消除透明卡片透出的深色 active.bg，可 `git checkout v5-clean-bg` 回退。
 - `v6-new-patterns`（commit `9a47725`）：替换全部 6 个纹样图片为新版，可 `git checkout v6-new-patterns` 回退。
+- `v7-rendong-lianhua-detail`（commit `1262df3`）：仅重处理忍冬/莲花纹样保留原图细节（去白底+增强对比+莲花alpha二值化），其余 4 个纹样不变，可 `git checkout v7-rendong-lianhua-detail` 回退。
 
 
 ---
