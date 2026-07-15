@@ -97,6 +97,20 @@ body {
   pointer-events: none;
 }
 
+/* Hover: slow clockwise rotation of the pattern image inside the card */
+@keyframes pg-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.pg-card:hover .pg-img {
+  animation: pg-spin 12s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-card:hover .pg-img {
+    animation: none;
+  }
+}
+
 /* ===== Noise overlay =====
    mix-blend-mode removed: with moving cards beneath it, a blend-mode layer
    must be re-composited every frame and was a key cause of the stutter.

@@ -77,8 +77,10 @@ export default function PatternGallery() {
   const [isMobile, setIsMobile] = useState(
     typeof window !== 'undefined' ? window.innerWidth < 640 : false
   );
-  const [autoPaused, setAutoPaused] = useState(false);
-  const lockRef = useRef(false);
+const [autoPaused, setAutoPaused] = useState(false);
+const autoPausedRef = useRef(false);
+const autoTickRef = useRef(0);
+const lockRef = useRef(false);
 
   const active = patterns[activeIndex];
 
@@ -129,13 +131,24 @@ export default function PatternGallery() {
     [activeIndex]
   );
 
-  // Auto-play carousel every 4s; pause on hover or tab hidden.
+  // Keep ref in sync with state so the interval callback always reads the
+  // latest pause flag without restarting the timer on every state change.
   useEffect(() => {
-    if (autoPaused) return;
-    const id = window.setInterval(() => navigate(1), 4000);
-    return () => window.clearInterval(id);
-  }, [autoPaused, navigate]);
+    autoPausedRef.current = autoPaused;
+  }, [autoPaused]);
 
+  // Auto-play carousel every 3s; skip ticks while animating or paused/hidden.
+  // The interval itself is stable (depends only on navigate), which prevents
+  // the "sometimes stops auto-playing" bug caused by effect teardown races.
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (autoPausedRef.current || lockRef.current) return;
+      navigate(1);
+    }, 3000);
+    return () => window.clearInterval(id);
+  }, [navigate]);
+
+  // Pause when tab is hidden.
   useEffect(() => {
     const onVis = () => setAutoPaused(document.hidden);
     document.addEventListener('visibilitychange', onVis);
