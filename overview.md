@@ -4,7 +4,8 @@
 - 仓库根：`D:/桌面/workbuddy/web`（本次会话 `git init`，`.gitignore` 排除 node_modules/deploy.zip/根级原始.glb/moxing/shots/_watermark_backup/.next/）。
 - `baseline-pre-enhance`（commit `f7b39c8`）：优化前基线，可 `git checkout baseline-pre-enhance` 回退。
 - `v1-enhanced`（commit `9016b8d`）：动效与美观优化版，可 `git checkout v1-enhanced` 回退。
-- 当前新增：Round 3 修复（见下方），提交后新增为 `v2-fixes`。
+- `v2-fixes`（commit `6f1009b`）：Round 3 修复（图位置/视频/轮播），可 `git checkout v2-fixes` 回退。
+- `v3-transparent-bg`（commit `a4ed193`）：千佛/三兔 去黑底，可 `git checkout v3-transparent-bg` 回退。
 
 ---
 
@@ -41,6 +42,22 @@
 4. **轮播卡片悬停顺时针缓慢旋转**
    - 在 `gallery/src/index.css` 新增 `@keyframes pg-spin` + `.pg-card:hover .pg-img { animation: pg-spin 12s linear infinite; }`。
    - 带 `prefers-reduced-motion` 降级。
+
+## 五、千佛点阵纹 / 三兔共耳藻井 去除黑色背景（已验证）
+- 用户指令：所有千佛 / 三兔 图像去除黑色背景，只保留纹样。
+- 范围：`deploy/`、`standalone/`、`gallery/public/`、`gallery/dist/` 下 `qianfo-render.png`、`santu-render.png` 共 8 个副本（SVG 的 new-qianfo/new-santu 本就透明，未动）。
+- 图片处理（PIL+numpy）：
+  - 边缘连通洪泛（从边框暗像素 4-邻域生长）定位「连到边框的背景」。
+  - 亮度软过渡 alpha：qianfo 55→120、santu 25→90；深黑角点 alpha=0（透明），纹样中心 alpha=255（保留）。
+  - 膨胀透明区域 3px 吃掉边缘暗色光晕，避免纹样边缘残留黑边。
+  - RGB→RGBA 存回 PNG。
+- 网页容器/投影修复：
+  - React 轮播 `.pg-card`：`background: transparent`，金色边框/发光，不再显示深色方块。
+  - React 轮播图片：去掉 inline `drop-shadow(0 0 3px rgba(0,0,0,.9))` 黑色投影，只保留纹样对应金色/紫色发光。
+  - 首页 `.pc` 卡片：`background: transparent`，`.ci-render` 去掉黑色 drop-shadow，hover 仅金色发光。
+  - 详情页古今对比 `.ci-img.an/.mo`：去掉 `var(--bg2)`/`var(--bg3)` 深色背景，同时 `buildPattern` 中不再通过 JS 设置深色背景兜底。
+- 结果：8 副本角点 alpha=0、中心 alpha=255；`gallery/dist` 与 `gallery/public` 完全一致；Playwright 截图显示轮播/首页的千佛、三兔图案均呈“发光浮于页面背景”效果，无深色方块。
+- 验证：served 文件 HTTP 200 / image/png / RGBA / 角点透明；首页与轮播页 img 均正常加载；无新增 JS 错误。
 
 ## 验证（Playwright, http://127.0.0.1:8765）
 - Round 3：HOME_CARDS=6；PATTERN_VIDEO_1~6 全部 vb=block 且 src 正确；CAROUSEL_AUTO_ADVANCE 忍冬纹→莲花纹；CAROUSEL_HOVER_SPIN_CSS 存在；NO_JS_ERRORS=0。

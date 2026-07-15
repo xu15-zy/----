@@ -64,8 +64,8 @@ function cardStyle(role: Role, p: Pattern, isMobile: boolean, disabled: boolean)
     zIndex: r.z,
     boxShadow:
       role === 'center'
-        ? `0 0 70px ${p.glow}66, 0 30px 70px rgba(0,0,0,.55)`
-        : `0 20px 50px rgba(0,0,0,.45)`,
+        ? `0 0 70px ${p.glow}66, 0 30px 70px rgba(201,168,76,.25)`
+        : `0 0 30px ${p.glow}22, 0 20px 50px rgba(0,0,0,.2)`,
     pointerEvents: disabled ? 'none' : 'auto',
   };
 }
@@ -269,8 +269,8 @@ const lockRef = useRef(false);
               draggable={false}
               style={{
                 filter: p.preview.endsWith('.svg')
-                  ? `drop-shadow(0 0 3px rgba(0,0,0,.9)) invert(1) brightness(1.12) drop-shadow(0 0 16px ${p.glow})`
-                  : `drop-shadow(0 0 3px rgba(0,0,0,.9)) drop-shadow(0 0 16px ${p.glow})`,
+                  ? `invert(1) brightness(1.12) drop-shadow(0 0 18px ${p.glow})`
+                  : `drop-shadow(0 0 18px ${p.glow}) drop-shadow(0 0 36px ${p.glow})`,
               }}
             />
           </a>

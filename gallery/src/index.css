@@ -75,8 +75,9 @@ body {
   width: min(40vw, 460px);
   height: min(40vw, 460px);
   border-radius: 24px;
-  background: rgba(8, 6, 4, 0.5);
-  border: 1px solid rgba(201, 168, 76, 0.18);
+  background: transparent;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  box-shadow: 0 0 40px rgba(201, 168, 76, 0.07), inset 0 0 0 1px rgba(201, 168, 76, 0.04);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,11 +91,17 @@ body {
   will-change: transform, opacity;
 }
 
+.pg-card:hover {
+  border-color: rgba(201, 168, 76, 0.48);
+  box-shadow: 0 0 56px rgba(201, 168, 76, 0.14), inset 0 0 0 1px rgba(201, 168, 76, 0.08);
+}
+
 .pg-card img.pg-img {
   width: 74%;
   height: 74%;
   object-fit: contain;
   pointer-events: none;
+  filter: drop-shadow(0 0 18px rgba(201, 168, 76, 0.55)) drop-shadow(0 0 36px rgba(201, 168, 76, 0.28));
 }
 
 /* Hover: slow clockwise rotation of the pattern image inside the card */
