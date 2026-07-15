@@ -8,7 +8,7 @@
 - `v3-transparent-bg`（commit `a4ed193`）：千佛/三兔 去黑底，可 `git checkout v3-transparent-bg` 回退。
 - `v4-clean-bg`（commit `8e0962e`）：进一步去除网页容器与图片黑色投影导致的黑底，可 `git checkout v4-clean-bg` 回退。
 - `v5-clean-bg`（commit `ac15031`）：为轮播卡片加径向光晕/半透明底色，彻底消除透明卡片透出的深色 active.bg，可 `git checkout v5-clean-bg` 回退。
-- `v6-new-patterns`（commit `[TBD]`）：替换全部 6 个纹样图片为新版，可 `git checkout v6-new-patterns` 回退。
+- `v6-new-patterns`（commit `9a47725`）：替换全部 6 个纹样图片为新版，可 `git checkout v6-new-patterns` 回退。
 
 
 ---
