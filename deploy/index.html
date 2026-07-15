@@ -515,11 +515,12 @@ function findImg(base,cb){
 }
 
 /* 敦煌壁画色板（矿物颜料感）：石青 / 赭石 / 朱砂 / 金 */
+// 扁平壁画着色：去金属光泽、降环境反射、均匀自发光，使 3D 模型呈现与「渲染后纹样」接近的平面绘制感
 const FRESCO_COLORS={
- jin:    {color:0xc9a84c, emissive:0xc9a84c, emissiveIntensity:0.18, metalness:0.60, roughness:0.40}, // 金
- shiqing:{color:0x3a6ea5, emissive:0x14304a, emissiveIntensity:0.12, metalness:0.20, roughness:0.70}, // 石青
- zheshi: {color:0x9c6b3f, emissive:0x3a2412, emissiveIntensity:0.12, metalness:0.15, roughness:0.78}, // 赭石
- zhusha: {color:0xc0392b, emissive:0x4a120c, emissiveIntensity:0.14, metalness:0.20, roughness:0.65}  // 朱砂
+ jin:    {color:0xc9a84c, emissive:0xc9a84c, emissiveIntensity:0.10, metalness:0.0, roughness:0.95, envMapIntensity:0.12}, // 金
+ shiqing:{color:0x3a6ea5, emissive:0x3a6ea5, emissiveIntensity:0.10, metalness:0.0, roughness:0.95, envMapIntensity:0.12}, // 石青
+ zheshi: {color:0x9c6b3f, emissive:0x9c6b3f, emissiveIntensity:0.10, metalness:0.0, roughness:0.95, envMapIntensity:0.12}, // 赭石
+ zhusha: {color:0xc0392b, emissive:0xc0392b, emissiveIntensity:0.10, metalness:0.0, roughness:0.95, envMapIntensity:0.12}  // 朱砂
 };
 /* 每个纹样的三层配色：core(中心)/body(主体)/outer(外圈) */
 const FRESCO_SCHEME={
@@ -856,6 +857,7 @@ if(m.color)m.color.setHex(p.color);
 if('emissive' in m&&m.emissive){m.emissive.setHex(p.emissive);m.emissiveIntensity=p.emissiveIntensity;}
 if('metalness' in m)m.metalness=p.metalness;
 if('roughness' in m)m.roughness=p.roughness;
+if('envMapIntensity' in m)m.envMapIntensity=(p.envMapIntensity!=null?p.envMapIntensity:0.12);
 m.needsUpdate=true;
 });
 }
@@ -1192,9 +1194,9 @@ cim.style.background=`radial-gradient(ellipse at 50% 50%,${p.c}33,transparent 60
 if(cia.querySelector('span'))cia.querySelector('span').style.display='';
 if(cim.querySelector('span'))cim.querySelector('span').style.display='';
 const mkbg=el=>{let b=el.querySelector('.ci-bg');if(!b){b=document.createElement('div');b.className='ci-bg';el.appendChild(b);}return b;};
-const SVG_FILTER='invert(1) brightness(1.2) drop-shadow(0 0 5px rgba(201,168,76,.5))';
 findImg('images/old-'+slug,url=>{if(url){const b=mkbg(cia);b.style.backgroundImage='url('+url+')';b.style.backgroundSize='cover';b.style.backgroundPosition='center';if(cia.querySelector('span'))cia.querySelector('span').style.display='none';}});
-findImg('images/new-'+slug,url=>{if(url){const b=mkbg(cim);b.classList.add('right');b.style.backgroundImage='url('+url+')';const sz=url.endsWith('.svg')?'contain':'cover';b.style.backgroundSize=sz;b.style.backgroundPosition='center';if(sz==='contain')b.style.filter=SVG_FILTER;if(cim.querySelector('span'))cim.querySelector('span').style.display='none';
+// 数字重构侧：与首页纹样网格「非悬停」态保持一致，使用线稿版本（thumb-*.svg）+ 同款反转滤镜
+findImg('images/thumb-'+slug,url=>{if(url){const b=mkbg(cim);b.classList.add('right');b.style.backgroundImage='url('+url+')';b.style.backgroundSize='contain';b.style.backgroundPosition='center';b.style.filter='invert(1) contrast(1.25) drop-shadow(0 0 5px rgba(0,0,0,1))';if(cim.querySelector('span'))cim.querySelector('span').style.display='none';
 const desc=document.createElement('div');desc.className='ci-desc';desc.innerHTML=`<h4>${p.name}</h4><div class="sub">${p.sub}</div><p>${p.bg}</p>`;cim.appendChild(desc);}});
 // 页面头图 banner：命中则显示，未命中保留渐变
 const pbbg=document.getElementById('pbbg');
