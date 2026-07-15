@@ -8,6 +8,8 @@
 - `v3-transparent-bg`（commit `a4ed193`）：千佛/三兔 去黑底，可 `git checkout v3-transparent-bg` 回退。
 - `v4-clean-bg`（commit `8e0962e`）：进一步去除网页容器与图片黑色投影导致的黑底，可 `git checkout v4-clean-bg` 回退。
 - `v5-clean-bg`（commit `ac15031`）：为轮播卡片加径向光晕/半透明底色，彻底消除透明卡片透出的深色 active.bg，可 `git checkout v5-clean-bg` 回退。
+- `v6-new-patterns`（commit `[TBD]`）：替换全部 6 个纹样图片为新版，可 `git checkout v6-new-patterns` 回退。
+
 
 ---
 
@@ -76,9 +78,19 @@
 - 前期：三元素齐全；滚半页时进度条 `scaleX=0.586`、回到顶部 `show=True`；导航高亮正确；Hero CTA 滚动到 `.ps` 成功；6/6 卡片入场正常。
 - 404 均为 `findImg` 探测可选图片扩展名，无害，非新增 JS 错误。
 
-## 涉及文件
-- `D:\桌面\workbuddy\web\standalone\index.html`（源）/ `deploy\index.html`（已同步）
-- `gallery/src/components/PatternGallery.tsx` + `gallery/src/index.css` + `deploy/carousel.html`（React 轮播）
-- `standalone/patterns/`、`deploy/patterns/`、`gallery/public/patterns/`（qianfo/santu 图片修正）
-- `standalone/videos/`、`deploy/videos/`（6 个纹样 MP4）
-- `standalone/models/`、`deploy/models/`（6 个 glb）
+## 七、替换全部 6 个纹样图片
+- 用户指令：用新提供的 6 张图替换敦煌纹样网站中所有原有纹样，以及纹样专题入口悬停后旋转的纹样。
+- 源图：
+  - 波纹 / 忍冬：用户剪贴板 JPG（白底）。
+  - 云纹 / 三兔 / 千佛 / 莲花：`D:\桌面\纹样模型\` 下 PNG（透明背景但带白色 matte，或白底）。
+- 处理：PIL+numpy 全局色键去底，根据角点背景色统一去除白色/黑色背景，软 alpha 过渡 + 高斯模糊边缘，保留纹样主体。
+- 覆盖范围：
+  - `deploy/patterns/`、`standalone/patterns/`、`gallery/public/patterns/`、`gallery/dist/patterns/` 下 6 张目标 PNG。
+  - `deploy/images/new-{slug}.png` 与 `standalone/images/new-{slug}.png`（详情页古今对比「新」侧，覆盖旧 SVG）。
+- 构建同步：`npm run build` 后同步 `deploy/carousel.html`/`carousel-standalone.html`/`deploy/assets/`。
+- 验证：Playwright 截图确认首页卡片悬停旋转纹样、轮播 6 张卡片、详情页古今对比「新」侧均显示为新纹样，无白底/黑底方块。
+
+## 涉及文件（新增）
+- `deploy/patterns/*.png`、`standalone/patterns/*.png`、`gallery/public/patterns/*.png`
+- `deploy/images/new-*.png`、`standalone/images/new-*.png`
+- `deploy/carousel.html`、`deploy/carousel-standalone.html`、`deploy/assets/*`
