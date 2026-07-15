@@ -6,6 +6,8 @@
 - `v1-enhanced`（commit `9016b8d`）：动效与美观优化版，可 `git checkout v1-enhanced` 回退。
 - `v2-fixes`（commit `6f1009b`）：Round 3 修复（图位置/视频/轮播），可 `git checkout v2-fixes` 回退。
 - `v3-transparent-bg`（commit `a4ed193`）：千佛/三兔 去黑底，可 `git checkout v3-transparent-bg` 回退。
+- `v4-clean-bg`（commit `8e0962e`）：进一步去除网页容器与图片黑色投影导致的黑底，可 `git checkout v4-clean-bg` 回退。
+- `v5-clean-bg`（commit `TBD`）：为轮播卡片加径向光晕/半透明底色，彻底消除透明卡片透出的深色 active.bg，可 `git checkout v5-clean-bg` 回退。
 
 ---
 
@@ -58,6 +60,16 @@
   - 详情页古今对比 `.ci-img.an/.mo`：去掉 `var(--bg2)`/`var(--bg3)` 深色背景，同时 `buildPattern` 中不再通过 JS 设置深色背景兜底。
 - 结果：8 副本角点 alpha=0、中心 alpha=255；`gallery/dist` 与 `gallery/public` 完全一致；Playwright 截图显示轮播/首页的千佛、三兔图案均呈“发光浮于页面背景”效果，无深色方块。
 - 验证：served 文件 HTTP 200 / image/png / RGBA / 角点透明；首页与轮播页 img 均正常加载；无新增 JS 错误。
+
+## 六、千佛/三兔 轮播卡片补光（进一步去黑底）
+- 问题：v4 后用户反馈轮播页千佛/三兔仍显深色方块。
+- 根因：`.pg-card` 已透明，但轮播根容器背景 `active.bg` 是深色（千佛 `#33260c`、三兔 `#2c1838`），透明卡片直接透出该深色，视觉上仍像黑底。
+- 修复：在 `gallery/src/index.css` 的 `.pg-card` 加径向光晕 + 半透明底色：
+  - 中心高光 `rgba(255,248,230,0.14)` 扩散到 55%，外层透明。
+  - 整体叠加 `rgba(255,248,230,0.07)` 半透明底色，避免卡片四角仍显黑。
+  - 效果：纹样中心区域明显发亮，四角色调随主题色（千佛暖金、三兔淡紫）过渡，不再是一块深色方块。
+- 构建同步：`npm run build` 后更新 `deploy/carousel.html`、`deploy/carousel-standalone.html`、`deploy/assets/`。
+- 验证：Playwright 截图显示轮播千佛/三兔中心区域平均亮度约 130~150（远超四角的 47~58），图案浮于柔光之上，无明显黑底方块。
 
 ## 验证（Playwright, http://127.0.0.1:8765）
 - Round 3：HOME_CARDS=6；PATTERN_VIDEO_1~6 全部 vb=block 且 src 正确；CAROUSEL_AUTO_ADVANCE 忍冬纹→莲花纹；CAROUSEL_HOVER_SPIN_CSS 存在；NO_JS_ERRORS=0。

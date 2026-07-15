@@ -75,7 +75,7 @@ body {
   width: min(40vw, 460px);
   height: min(40vw, 460px);
   border-radius: 24px;
-  background: transparent;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 248, 230, 0.14) 0%, transparent 55%), rgba(255, 248, 230, 0.07);
   border: 1px solid rgba(201, 168, 76, 0.25);
   box-shadow: 0 0 40px rgba(201, 168, 76, 0.07), inset 0 0 0 1px rgba(201, 168, 76, 0.04);
   display: flex;
