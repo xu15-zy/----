@@ -1,0 +1,24 @@
+# ===== Dependencies (regenerable via npm install) =====
+node_modules/
+
+# ===== Build / cache output =====
+.next/
+gallery/dist/
+out/
+dist/
+*.log
+.server.log
+
+# ===== Archives & raw model exports (kept on disk, not in repo) =====
+deploy.zip
+*.zip
+/*.glb
+moxing/
+shots/
+_watermark_backup/
+
+# ===== OS / editor cruft =====
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

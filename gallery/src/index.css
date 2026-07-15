@@ -1,0 +1,313 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #0a0806;
+  overflow: hidden;
+  color: #e8dcc8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Gallery root ===== */
+.pg-root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  perspective: 1400px;
+}
+
+/* ===== Ambient SideRays background ===== */
+.pg-rays {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ===== ShapeBlur cursor glow (React Bits) ===== */
+/* Sits above the cards (z:60) but below the nav (z:80). pointer-events:none
+   lets clicks fall through to the cards/arrows/guide beneath it. */
+.pg-shapeblur {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* ===== Giant watermark ===== */
+.pg-watermark {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(120px, 26vw, 440px);
+  letter-spacing: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 5;
+  line-height: 1;
+}
+
+/* ===== Pattern cards ===== */
+.pg-card {
+  position: absolute;
+  top: 50%;
+  left: 50%; /* constant — horizontal offset is driven by transform: translateX */
+  width: min(40vw, 460px);
+  height: min(40vw, 460px);
+  border-radius: 24px;
+  background: rgba(8, 6, 4, 0.5);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-decoration: none;
+  user-select: none;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  /* Only transform/opacity are animated; keep the GPU hint narrow so the
+     browser promotes each card to its own layer without over-promoting. */
+  will-change: transform, opacity;
+}
+
+.pg-card img.pg-img {
+  width: 74%;
+  height: 74%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* ===== Noise overlay =====
+   mix-blend-mode removed: with moving cards beneath it, a blend-mode layer
+   must be re-composited every frame and was a key cause of the stutter.
+   A plain low-opacity grain reads almost identically. */
+.pg-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ===== Top navigation ===== */
+.pg-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 max(24px, 4vw);
+  background: linear-gradient(180deg, rgba(10, 8, 6, 0.82), rgba(10, 8, 6, 0));
+  pointer-events: none; /* let empty top area pass clicks through to cards */
+}
+.pg-nav > * {
+  pointer-events: auto;
+}
+.pg-brand {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: #c9a84c;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  text-shadow: 0 0 18px rgba(201, 168, 76, 0.35);
+}
+.pg-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.pg-nav-link {
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: rgba(232, 220, 200, 0.7);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
+  white-space: nowrap;
+}
+.pg-nav-link:hover {
+  color: #e0c978;
+}
+.pg-nav-link.is-active {
+  color: #c9a84c;
+}
+.pg-nav-link.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: #c9a84c;
+}
+
+/* ===== Bottom-left info ===== */
+.pg-info {
+  position: absolute;
+  left: max(32px, 4vw);
+  bottom: max(32px, 5vh);
+  z-index: 70;
+  max-width: min(440px, 80vw);
+  animation: pgFadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes pgFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pg-info-title {
+  font-family: 'Noto Serif SC', 'Inter', serif;
+  font-weight: 600;
+  font-size: clamp(34px, 5.2vw, 64px);
+  color: #f5ecd6;
+  letter-spacing: 4px;
+  line-height: 1.1;
+}
+.pg-info-subtitle {
+  margin-top: 12px;
+  font-size: 15px;
+  color: rgba(245, 236, 214, 0.72);
+  letter-spacing: 2px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.pg-info-subtitle span {
+  font-family: 'Anton', sans-serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  opacity: 0.85;
+}
+.pg-info-desc {
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.85;
+  color: rgba(245, 236, 214, 0.68);
+}
+
+.pg-arrows {
+  margin-top: 22px;
+  display: flex;
+  gap: 14px;
+}
+.pg-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e8dcc8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pg-arrow:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.06);
+}
+.pg-arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===== Bottom-right guide ===== */
+.pg-guide {
+  position: absolute;
+  right: max(32px, 4vw);
+  bottom: max(32px, 5vh);
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: rgba(232, 220, 200, 0.7);
+  text-decoration: none;
+  font-family: 'Anton', sans-serif;
+  transition: color 0.25s, transform 0.25s;
+  animation: pgFadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+.pg-guide:hover {
+  color: #fff;
+  transform: translateX(4px);
+}
+.pg-guide svg {
+  transition: transform 0.25s;
+}
+.pg-guide:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 640px) {
+  .pg-card {
+    width: 78vw;
+    height: 78vw;
+  }
+  .pg-nav-links {
+    gap: 16px;
+  }
+  .pg-nav-link {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  .pg-brand {
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+  .pg-info {
+    left: 0;
+    right: 0;
+    bottom: 104px;
+    max-width: none;
+    padding: 0 18px;
+    text-align: center;
+  }
+  .pg-info-name,
+  .pg-arrows {
+    justify-content: center;
+  }
+  .pg-guide {
+    left: 0;
+    right: 0;
+    bottom: 24px;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,114 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --dh-bg: #f4ecda;
+  --dh-ink: #2b2620;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--dh-bg);
+  color: var(--dh-ink);
+  font-feature-settings: "kern";
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #c9a227;
+  color: #1a1611;
+}
+
+@layer components {
+  .container-dh {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .heading-dh {
+    @apply font-serif font-medium tracking-wide text-mo;
+  }
+
+  /* 纹样风格分割线：细金线 + 居中菱点 */
+  .divider-dh {
+    @apply relative my-10 flex items-center justify-center;
+  }
+  .divider-dh::before,
+  .divider-dh::after {
+    content: "";
+    @apply h-px flex-1 bg-jin/50;
+  }
+  .divider-dh > span {
+    @apply mx-4 inline-block h-2 w-2 rotate-45 bg-zhusha;
+  }
+
+  .pill-dh {
+    @apply inline-flex items-center rounded-full border border-jin/60 bg-mibai-light/60 px-3 py-1 text-xs font-medium text-zheshi-deep;
+  }
+
+  .card-dh {
+    @apply rounded-2xl border border-jin/30 bg-mibai-light/70 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md;
+  }
+
+  .btn-dh {
+    @apply inline-flex items-center justify-center rounded-full bg-zhusha px-6 py-2.5 text-sm font-medium text-mibai-light transition hover:bg-zhusha-deep;
+  }
+  .btn-dh-ghost {
+    @apply inline-flex items-center justify-center rounded-full border border-shiqing/50 px-6 py-2.5 text-sm font-medium text-shiqing-deep transition hover:bg-shiqing/10;
+  }
+}
+
+/* 滚动揭示动画 */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  will-change: opacity, transform;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* 纹样差异化动画占位关键帧 */
+@keyframes dh-grow {
+  from { stroke-dashoffset: 600; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes dh-bloom {
+  0% { transform: scale(0.2) rotate(-30deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes dh-drift {
+  0% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  100% { transform: translateX(-10px); }
+}
+@keyframes dh-ripple {
+  0% { transform: scale(0.3); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@keyframes dh-dot {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+@keyframes dh-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.dh-grow { stroke-dasharray: 600; animation: dh-grow 3s ease-in-out infinite alternate; }
+
