@@ -1,7 +1,22 @@
 import type { Metadata } from "next";
+import { Noto_Serif_SC, Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+
+// 自托管字体：构建时下载并随站点一同部署，避免依赖 Google Fonts CDN（国内常被拦截/慢）
+const notoSerifSC = Noto_Serif_SC({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-serif",
+});
+const notoSansSC = Noto_Sans_SC({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "敦煌六大核心纹样 · 数字化交互宣传",
@@ -15,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" className={`${notoSerifSC.variable} ${notoSansSC.variable}`}>
       <body className="font-sans antialiased">
         <Nav />
         <main>{children}</main>

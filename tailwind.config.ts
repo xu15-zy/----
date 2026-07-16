@@ -17,8 +17,8 @@ const config: Config = {
         mo: { DEFAULT: "#2b2620", deep: "#1a1611", light: "#4a4239" },
       },
       fontFamily: {
-        serif: ['"Noto Serif SC"', "STSong", "SimSun", "serif"],
-        sans: ['"Noto Sans SC"', "PingFang SC", "Microsoft YaHei", "sans-serif"],
+        serif: ['var(--font-serif)', "STSong", "SimSun", "serif"],
+        sans: ['var(--font-sans)', "PingFang SC", "Microsoft YaHei", "sans-serif"],
       },
       keyframes: {
         "fade-up": {
