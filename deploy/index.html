@@ -517,10 +517,10 @@ function findImg(base,cb){
 /* 敦煌壁画色板（矿物颜料感）：石青 / 赭石 / 朱砂 / 金 */
 // 扁平壁画着色：去金属光泽、降环境反射、均匀自发光，使 3D 模型呈现与「渲染后纹样」接近的平面绘制感
 const FRESCO_COLORS={
- jin:    {color:0xc9a84c, emissive:0xc9a84c, emissiveIntensity:0.10, metalness:0.0, roughness:0.95, envMapIntensity:0.12}, // 金
- shiqing:{color:0x3a6ea5, emissive:0x3a6ea5, emissiveIntensity:0.10, metalness:0.0, roughness:0.95, envMapIntensity:0.12}, // 石青
- zheshi: {color:0x9c6b3f, emissive:0x9c6b3f, emissiveIntensity:0.10, metalness:0.0, roughness:0.95, envMapIntensity:0.12}, // 赭石
- zhusha: {color:0xc0392b, emissive:0xc0392b, emissiveIntensity:0.10, metalness:0.0, roughness:0.95, envMapIntensity:0.12}  // 朱砂
+ jin:    {color:0xab8f4a, emissive:0xab8f4a, emissiveIntensity:0.06, metalness:0.0, roughness:0.95, envMapIntensity:0.12}, // 金（降低饱和度）
+ shiqing:{color:0x3a5a7a, emissive:0x3a5a7a, emissiveIntensity:0.06, metalness:0.0, roughness:0.95, envMapIntensity:0.12}, // 石青（灰蓝）
+ zheshi: {color:0x7d5a3c, emissive:0x7d5a3c, emissiveIntensity:0.06, metalness:0.0, roughness:0.95, envMapIntensity:0.12}, // 赭石（灰褐）
+ zhusha: {color:0x943f36, emissive:0x943f36, emissiveIntensity:0.06, metalness:0.0, roughness:0.95, envMapIntensity:0.12}  // 朱砂（暗红）
 };
 /* 每个纹样的三层配色：core(中心)/body(主体)/outer(外圈) */
 const FRESCO_SCHEME={
@@ -572,10 +572,10 @@ this.ctrl.autoRotate=true;this.ctrl.autoRotateSpeed=0.6;
 this.ctrl.minDistance=1;this.ctrl.maxDistance=15;
 
 // Lights
-this.sc.add(new THREE.AmbientLight(0xffffff,0.7));
-const dl=new THREE.DirectionalLight(0xffffff,0.9);dl.position.set(3,4,5);this.sc.add(dl);
-const rl=new THREE.DirectionalLight(0x4a6d7c,0.35);rl.position.set(-3,-2,-4);this.sc.add(rl);
-this.ml3=new THREE.PointLight(0xffffff,0.4,15);this.ml3.position.set(0,0,3);this.sc.add(this.ml3);
+this.sc.add(new THREE.AmbientLight(0xffffff,0.6));
+const dl=new THREE.DirectionalLight(0xffffff,0.75);dl.position.set(3,4,5);this.sc.add(dl);
+const rl=new THREE.DirectionalLight(0x4a6d7c,0.3);rl.position.set(-3,-2,-4);this.sc.add(rl);
+this.ml3=new THREE.PointLight(0xffffff,0.3,15);this.ml3.position.set(0,0,3);this.sc.add(this.ml3);
 
 // Mouse light
 this.wrap.addEventListener('mousemove',e=>{

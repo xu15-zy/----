@@ -233,7 +233,7 @@ const lockRef = useRef(false);
             transition: `opacity ${DUR}ms ${EASE}`,
           }}
         >
-          {p.en}
+          {p.name}
         </div>
       ))}
 
