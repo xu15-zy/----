@@ -22,3 +22,11 @@ _watermark_backup/
 Thumbs.db
 .idea/
 .vscode/
+
+# ===== 补充：部署产物 / 误放目录 / 内部文件 =====
+gallery/
+deploy/
+standalone/
+.workbuddy/
+/*.svg
+/*.mp4
