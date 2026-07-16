@@ -32,9 +32,28 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className={`${notoSerifSC.variable} ${notoSansSC.variable}`}>
       <body className="font-sans antialiased">
+        {/* 标记 JS 可用：在内容解析前同步执行，避免内容闪烁 */}
+        <script
+          data-cfasync="false"
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         <Nav />
         <main>{children}</main>
         <Footer />
+        {/* 纯原生滚动揭示：不依赖 React hydration，配 .js .reveal 使用，含安全网 */}
+        <script
+          data-cfasync="false"
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){var els=document.querySelectorAll('.reveal');" +
+              "if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in')});return;}" +
+              "try{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.15});" +
+              "els.forEach(function(el){io.observe(el);});}catch(err){els.forEach(function(el){el.classList.add('in');});}" +
+              "setTimeout(function(){document.querySelectorAll('.reveal:not(.in)').forEach(function(el){var r=el.getBoundingClientRect();if(r.top<(window.innerHeight||document.documentElement.clientHeight))el.classList.add('in');});},2000);})();",
+          }}
+        />
       </body>
     </html>
   );
