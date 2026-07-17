@@ -1,25 +1,8 @@
 import type { Metadata } from "next";
-import { Noto_Serif_SC, Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-
-// 自托管字体：构建时下载并随站点一同部署，避免依赖 Google Fonts CDN（国内常被拦截/慢）
-const notoSerifSC = Noto_Serif_SC({
-  weight: ["400", "500", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-serif",
-});
-const notoSansSC = Noto_Sans_SC({
-  weight: ["400", "500", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-sans",
-});
 
 export const metadata: Metadata = {
-  title: "敦煌六大核心纹样 · 数字化交互宣传",
+  title: "敦煌纹样 · 数字重生 — 六大核心纹样数字化交互设计",
   description:
     "以敦煌佛教装饰符号体系为框架，系统介绍忍冬纹、莲花纹、云纹、八功德水波纹、千佛点阵纹、三兔共耳藻井纹六大核心纹样，探索传统文化的可持续传播。",
 };
@@ -30,19 +13,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-CN" className={`${notoSerifSC.variable} ${notoSansSC.variable}`}>
-      <body className="font-sans antialiased">
-        {/* 标记 JS 可用：在内容解析前同步执行，避免内容闪烁 */}
+    <html lang="zh-CN">
+      <body className="font-sans antialiased" style={{ background: "#0a0a0a", color: "#f5e6d0" }}>
         <script
           data-cfasync="false"
           dangerouslySetInnerHTML={{
             __html: "document.documentElement.classList.add('js')",
           }}
         />
-        <Nav />
         <main>{children}</main>
-        <Footer />
-        {/* 纯原生滚动揭示：不依赖 React hydration，配 .js .reveal 使用，含安全网 */}
         <script
           data-cfasync="false"
           dangerouslySetInnerHTML={{

@@ -1,32 +1,22 @@
-# ===== Dependencies (regenerable via npm install) =====
+# dependencies
 node_modules/
+.pnp
+.pnp.js
 
-# ===== Build / cache output =====
+# build
 .next/
-gallery/dist/
 out/
-dist/
-*.log
-.server.log
 
-# ===== Archives & raw model exports (kept on disk, not in repo) =====
-deploy.zip
-*.zip
-/*.glb
-moxing/
-shots/
-_watermark_backup/
-
-# ===== OS / editor cruft =====
+# misc
 .DS_Store
-Thumbs.db
-.idea/
-.vscode/
+*.pem
+.env*.local
 
-# ===== 补充：部署产物 / 误放目录 / 内部文件 =====
-gallery/
-deploy/
-standalone/
-.workbuddy/
-/*.svg
-/*.mp4
+# debug
+npm-debug.log*
+
+# vercel
+.vercel
+
+# cloudflare
+.wrangler
